@@ -36,6 +36,12 @@ docker-compose up -d
 
 Com esse comando, será inicializado o NGINX como Load Balancer, Postgres e a Rest API, na configuração atual a aplicação é duplicada para testar a escalabilidade horizontal.
 
+## Documentação
+
+A documentação foi desenvolvida através do Postman, e pode ser encontrada no seguinte link:
+
+[https://documenter.getpostman.com/view/9482664/UVkpPvTW](https://documenter.getpostman.com/view/9482664/UVkpPvTW)
+
  ## Built With
  
  * [VSCode](https://code.visualstudio.com/) - Usado para edição dos arquivos.

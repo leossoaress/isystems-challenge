@@ -20,15 +20,15 @@ def connect(auth):
   sockets[request.sid] = userId
   print('Client connect')
 
-@socketio.on('disconnect')
-def disconnect():
-  del clients[sockets[request.sid]] 
-  del sockets[request.sid]
-  print('Client disconnected')
-
 @socketio.on('chat')
 def forwardMessage(json):
   print('received json: ' + str(json))
   dest = json.get('dest')
   if dest in clients:
     emit('chat', {'message': json.get('message')}, room=clients[dest])
+    
+@socketio.on('disconnect')
+def disconnect():
+  del clients[sockets[request.sid]] 
+  del sockets[request.sid]
+  print('Client disconnected')
