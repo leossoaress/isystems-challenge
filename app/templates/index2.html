@@ -1,0 +1,32 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf-8">
+
+    var socket = io('ws://127.0.0.1:5000', {
+      auth: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDU4NTM1OTksImlhdCI6MTY0NTc2NzE5OSwic3ViIjoxNSwib3JnIjoxLCJyb2xlIjoiTUFOQUdFUiJ9.6Nk3hyZtG3X1E2zLSwsnnLFJ3TpG03Ih3iIm5zZH-zU'
+    });
+
+    socket.on('connect', function() {
+        console.log('Connected')
+        //socket.emit('chat', {dest: 14, message: 'Estou com você'});
+    });
+
+    socket.on('chat', function(data) {
+      console.log(data)
+      document.getElementById("message").innerHTML = 'Mensagem recebida: ' + data.message;
+      //socket.emit('my event', {data: 'I\'m connected!'});
+  });
+</script>
+
+<label for="msg">Mensagem:</label>
+<input type="text" id="msg" name="msg"><br><br>
+
+<button id="sendButton">Enviar</button>
+
+<script type="text/javascript" charset="utf-8">
+  document.getElementById('sendButton').addEventListener('click', function() { 
+    console.log('aqui')
+    socket.emit('chat', {dest: 14, message: document.getElementById('msg').value})
+  }, false);
+</script>
+
+<p id="message">Mensagem recebida: </p>

@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:1.15-alpine
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - challenge-api
+    ports:
+      - 8080:8080
+    networks:
+      isystems:
+        aliases:
+          - nginx.isystems
+
+  postgres-isystems:
+    container_name: postgres-isystems
+    image: postgres:14.1
+    volumes:
+      - ../postgres-isystemns-data:/var/lib/postgresql/data/
+    ports:
+      - "5001:5432"
+    environment:
+      - POSTGRES_PASSWORD=isystemns
+      - POSTGRES_USER=isystemns
+      - POSTGRES_DATABASE=isystems_challenge
+    networks:
+      isystems:
+        aliases:
+          - postgres.isystems
+
+  challenge-api:
+    build:
+      context: .
+    image: isystemns/challenge-api
+    ports:
+      - "5000"
+    depends_on:
+      - postgres-isystems
+    scale: 2
+    environment:
+      - FLASK_ENV=development
+      - DATABASE_URL=postgresql://isystemns:isystemns@postgres.isystems:5001/isystems_challenge
+      - JWT_SECRET_KEY=hhgaghhgsdhdhdd
+    networks:
+      isystems:
+        aliases:
+          - api.isystems
+
+networks:
+  isystems:
+    driver: bridge

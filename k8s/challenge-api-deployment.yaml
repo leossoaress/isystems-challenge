@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.1 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: challenge-api
+  name: challenge-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: challenge-api
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.26.1 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/isystems: "true"
+        io.kompose.service: challenge-api
+    spec:
+      containers:
+        - env:
+            - name: DATABASE_URL
+              value: postgresql://isystemns:isystemns@postgres.isystems:5001/isystems_challenge
+            - name: FLASK_ENV
+              value: development
+            - name: JWT_SECRET_KEY
+              value: hhgaghhgsdhdhdd
+          image: isystemns/challenge-api
+          name: challenge-api
+          ports:
+            - containerPort: 5000
+          resources: {}
+      restartPolicy: Always
+status: {}
